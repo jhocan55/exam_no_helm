@@ -1,33 +1,41 @@
 #!/bin/bash
 
-# Exit on error
+# Exit immediately if a command exits with a non-zero status
 set -e
 
 ### 1. APPLY CONFIGMAP AND SECRET FOR POSTGRES ###
-echo "\n[1/6] Creating ConfigMap and Secret for PostgreSQL..."
+echo -e "\n[1/7] Creating ConfigMap and Secret for PostgreSQL..."
 kubectl apply -f postgres-configmap.yaml
 kubectl apply -f postgres-secret.yaml
 
-### 2. DEPLOY POSTGRESQL STATEFULSET ###
-echo "\n[2/6] Deploying PostgreSQL StatefulSet and Service..."
+### 2. DEPLOY POSTGRESQL STATEFULSET AND SERVICE ###
+echo -e "\n[2/7] Deploying PostgreSQL StatefulSet and Service..."
 kubectl apply -f postgres-statefulset.yaml
 kubectl apply -f postgres-service.yaml
 
-### 3. DEPLOY FASTAPI APP (3 replicas) ###
-echo "\n[3/6] Deploying FastAPI Deployment and Service..."
+### 3. DEPLOY FASTAPI APP (3 replicas) AND SERVICE ###
+echo -e "\n[3/7] Deploying FastAPI Deployment and Service..."
 kubectl apply -f fastapi-deployment.yaml
 kubectl apply -f fastapi-service.yaml
 
-### 4. DEPLOY INGRESS CONTROLLER (if needed) ###
-echo "\n[4/6] Creating Ingress for FastAPI..."
+### 4. SETUP HORIZONTAL POD AUTOSCALER FOR FASTAPI ###
+echo -e "\n[4/7] Creating Horizontal Pod Autoscaler for FastAPI..."
+kubectl apply -f fastapi-hpa.yaml
+
+### 5. DEPLOY INGRESS RESOURCE FOR FASTAPI ###
+echo -e "\n[5/7] Creating Ingress for FastAPI with TLS (Cert-Manager & Let's Encrypt)..."
 kubectl apply -f fastapi-ingress.yaml
 
-### 5. DISPLAY RESOURCES ###
-echo "\n[5/6] Deployed Resources in 'default' namespace:"
+### 6. VERIFY DEPLOYED RESOURCES ###
+echo -e "\n[6/7] Deployed resources in 'default' namespace:"
 kubectl get all
+kubectl get ingress
+kubectl get certificates
+kubectl get hpa
 
-### 6. SUGGEST DNS STEP ###
-echo "\n[6/6] Reminder:"
-echo "Make sure your domain (ClouDNS) points to your Ingress Controller IP."
-echo "Check Ingress IP with: kubectl get ingress"
-echo "Done."
+### 7. DNS CONFIGURATION REMINDER ###
+echo -e "\n[7/7] DNS Configuration Reminder:"
+echo "Ensure your domain (on CloudNS) points to the IP address of your Ingress Controller."
+echo "Check your Ingress external IP with:"
+echo "kubectl get ingress fastapi-ingress"
+echo "\nAll done. Your FastAPI application is ready and secured with HTTPS!"

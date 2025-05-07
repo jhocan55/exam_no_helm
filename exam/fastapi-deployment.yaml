@@ -24,7 +24,7 @@ spec:
               name: postgres-secret
               key: POSTGRES_PASSWORD
         - name: DATABASE_URL
-          value: "postgresql://admin:password@postgres:5432/storedb"
+          value: "postgresql://admin:$(POSTGRES_PASSWORD)@postgres:5432/storedb"
         resources:
           requests:
             memory: "128Mi"
