@@ -1,0 +1,12 @@
+2025-05-11 12:05:43.090 UTC [1] LOG:  starting PostgreSQL 12.0 on x86_64-pc-linux-musl, compiled by gcc (Alpine 8.3.0) 8.3.0, 64-bit
+2025-05-11 12:05:43.090 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2025-05-11 12:05:43.090 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2025-05-11 12:05:43.097 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-05-11 12:05:43.134 UTC [20] LOG:  database system was shut down at 2025-05-11 12:05:27 UTC
+2025-05-11 12:05:43.145 UTC [1] LOG:  database system is ready to accept connections
+2025-05-11 12:17:40.267 UTC [59] ERROR:  syntax error at or near "psql" at character 1
+2025-05-11 12:17:40.267 UTC [59] STATEMENT:  psql -h db -U admin -d storedb
+	SELECT * FROM users;
+2025-05-11 12:18:19.908 UTC [59] ERROR:  syntax error at or near "psql" at character 1
+2025-05-11 12:18:19.908 UTC [59] STATEMENT:  psql -h db -U admin -d storedb
+	SELECT * FROM users;
